@@ -1,0 +1,29 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.31'
+    id 'idea'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+def pippoVersion = '1.12.0'
+def jvmTargetVersion = '1.8'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "ro.pippo:pippo-core:${pippoVersion}"
+    implementation "ro.pippo:pippo-undertow:${pippoVersion}"
+    implementation "ro.pippo:pippo-weld:${pippoVersion}"
+    implementation "ro.pippo:pippo-controller:${pippoVersion}"
+    implementation "ro.pippo:pippo-metrics-prometheus:${pippoVersion}"
+}
+
+compileKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
+compileTestKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
+
+sourceSets {
+    main.kotlin.srcDirs = ['src/main/resources', 'src/main/kotlin']
+    test.kotlin.srcDirs = ['src/test/resources', 'src/test/kotlin']
+}
