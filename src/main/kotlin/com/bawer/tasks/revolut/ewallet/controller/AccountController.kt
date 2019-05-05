@@ -11,7 +11,7 @@ import ro.pippo.core.HttpConstants
 import javax.inject.Inject
 
 @Path("/accounts")
-class AccountController(@Inject private val service: AccountService) : Controller() {
+class AccountController @Inject constructor(private val service: AccountService) : Controller() {
 
     @GET
     @Produces(Produces.JSON)

@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 
 
-class AccountServiceImpl(@Inject private val repository: AccountRepository) : AccountService {
+class AccountServiceImpl @Inject constructor(private val repository: AccountRepository) : AccountService {
 
     private val idGenerator = AtomicInteger(0)
 

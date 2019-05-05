@@ -12,7 +12,7 @@ import ro.pippo.controller.extractor.Param
 import javax.inject.Inject
 
 @Path("/transfers")
-class TransferController(@Inject private val service: TransferService) : Controller() {
+class TransferController @Inject constructor( private val service: TransferService) : Controller() {
 
     @GET
     @Produces(Produces.JSON)

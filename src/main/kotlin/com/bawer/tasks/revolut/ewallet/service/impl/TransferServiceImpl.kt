@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
-class TransferServiceImpl(
-        @Inject private val repository: TransferRepository,
-        @Inject private val disruptor: TransferDisruptor
+class TransferServiceImpl @Inject constructor(
+        private val repository: TransferRepository,
+        private val disruptor: TransferDisruptor
 ) : TransferService {
 
     private val idGenerator = AtomicLong(0)
