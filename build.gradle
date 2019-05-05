@@ -13,11 +13,13 @@ def jvmTargetVersion = '1.8'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "ro.pippo:pippo-core:${pippoVersion}"
-    implementation "ro.pippo:pippo-undertow:${pippoVersion}"
-    implementation "ro.pippo:pippo-weld:${pippoVersion}"
-    implementation "ro.pippo:pippo-controller:${pippoVersion}"
-    implementation "ro.pippo:pippo-metrics-prometheus:${pippoVersion}"
+    implementation "ro.pippo:pippo-core:$pippoVersion"
+    implementation "ro.pippo:pippo-undertow:$pippoVersion"
+    implementation "ro.pippo:pippo-weld:$pippoVersion"
+    implementation "ro.pippo:pippo-controller:$pippoVersion"
+    implementation "com.googlecode.cqengine:cqengine:3.2.0"
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+    implementation "com.lmax:disruptor:3.4.2"
 }
 
 compileKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
@@ -25,5 +27,11 @@ compileTestKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
 
 sourceSets {
     main.kotlin.srcDirs = ['src/main/resources', 'src/main/kotlin']
-    test.kotlin.srcDirs = ['src/test/resources', 'src/test/kotlin']
+    test.kotlin.srcDirs = [
+            'src/test/resources',
+            'src/test/kotlin/unit',
+            'src/test/kotlin/integration',
+            'src/test/kotlin/performance',
+            'src/test/kotlin/functional'
+    ]
 }

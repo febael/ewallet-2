@@ -7,11 +7,11 @@ import com.bawer.tasks.revolut.ewallet.service.AccountService
 import ro.pippo.controller.*
 import ro.pippo.controller.extractor.Body
 import ro.pippo.controller.extractor.Param
+import ro.pippo.core.HttpConstants
+import javax.inject.Inject
 
 @Path("/accounts")
-class AccountController (
-        private val service: AccountService
-) : Controller() {
+class AccountController(@Inject private val service: AccountService) : Controller() {
 
     @GET
     @Produces(Produces.JSON)
@@ -39,5 +39,6 @@ class AccountController (
     @Consumes(Consumes.JSON)
     fun create(@Body request: AccountRequest) = ApiResponse(returnObject = service.create(request)).also {
         response.status(201)
+        response.header(HttpConstants.Header.LOCATION, "${getRequest().applicationPath}/${it.returnObject!!.id}")
     }
 }

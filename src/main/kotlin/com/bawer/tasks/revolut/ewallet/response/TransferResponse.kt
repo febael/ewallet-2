@@ -1,7 +1,10 @@
 package com.bawer.tasks.revolut.ewallet.response
 
+import com.bawer.tasks.revolut.ewallet.model.TransferStatus
+
 data class TransferResponse (
-        val id: Int,
+        val id: Long,
+        val status: TransferStatus? = null,
         val checkURI: String,
-        val cancelURI: String
+        val cancelURI: String? = null
 )
