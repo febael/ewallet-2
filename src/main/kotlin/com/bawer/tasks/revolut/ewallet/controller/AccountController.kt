@@ -1,5 +1,6 @@
 package com.bawer.tasks.revolut.ewallet.controller
 
+import com.bawer.tasks.revolut.ewallet.model.Transfer
 import com.bawer.tasks.revolut.ewallet.request.AccountRequest
 import com.bawer.tasks.revolut.ewallet.request.TransferDirection
 import com.bawer.tasks.revolut.ewallet.response.ApiResponse
@@ -26,12 +27,12 @@ class AccountController @Inject constructor(private val service: AccountService)
     @GET("/{id}/transfers")
     @Produces(Produces.JSON)
     @NoCache
-    fun getTransfers(@Param id: Int) {
+    fun getTransfers(@Param id: Int): ApiResponse<List<Transfer>> {
         val direction = routeContext.getParameter("direction").toString(null)?.let {
             TransferDirection.valueOf(it)
         } ?: TransferDirection.ALL
         val (limit, after) = getPagingParameters()
-        ApiResponse(returnObject = service.getTransfers(id, direction, limit, after))
+        return ApiResponse(returnObject = service.getTransfers(id, direction, limit, after))
     }
 
     @POST

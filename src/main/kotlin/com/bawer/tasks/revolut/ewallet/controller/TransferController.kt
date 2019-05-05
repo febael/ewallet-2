@@ -1,5 +1,6 @@
 package com.bawer.tasks.revolut.ewallet.controller
 
+import com.bawer.tasks.revolut.ewallet.model.Transfer
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus.*
 import com.bawer.tasks.revolut.ewallet.request.TransferRequest
@@ -17,9 +18,9 @@ class TransferController @Inject constructor( private val service: TransferServi
     @GET
     @Produces(Produces.JSON)
     @NoCache
-    fun getAll() {
-        val status = routeContext.getParameter("status").toString(null)?.let { TransferStatus.valueOf(it) }
-        ApiResponse(returnObject = service.getAll(status))
+    fun getAll(): ApiResponse<List<Transfer>> {
+        val status = routeContext.getParameter("status").toString(null)?.let { valueOf(it) }
+        return ApiResponse(returnObject = service.getAll(status))
     }
 
     @GET("/{id}")
