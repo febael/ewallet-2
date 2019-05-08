@@ -7,4 +7,12 @@ interface Repository <T, I> {
     fun getAll(): List<T>
 
     fun save(obj: T): Boolean
+
+    fun saveAll(vararg objs: T): Boolean
+
+    fun delete(id: I): Boolean
+
+    fun deleteAll(vararg ids: I): Boolean
+
+    fun count(): Int
 }

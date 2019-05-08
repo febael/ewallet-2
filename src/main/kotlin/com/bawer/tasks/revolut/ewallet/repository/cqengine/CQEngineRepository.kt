@@ -24,4 +24,13 @@ abstract class CQEngineRepository<T, I> : Repository<T, I> {
     override fun getAll(): List<T> = collection.toList()
 
     override fun save(obj: T) = collection.add(obj)
+
+    // TODO : Creation of a list object overhead at addAll
+    override fun saveAll(vararg objs: T) = collection.addAll(objs)
+
+    override fun count() = collection.size
+
+    override fun delete(id: I) = TODO("not implemented")
+
+    override fun deleteAll(vararg ids: I) = TODO("not implemented")
 }

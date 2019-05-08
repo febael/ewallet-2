@@ -4,7 +4,7 @@ import com.bawer.tasks.revolut.ewallet.disruptor.TransferEvent
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
-class Transfer private constructor(
+data class Transfer (
         val id: Long,
         val type: TransferType,
         val description: String?,

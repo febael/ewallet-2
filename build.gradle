@@ -9,6 +9,7 @@ repositories {
 }
 
 def pippoVersion = '1.12.0'
+def junitVersion = '5.4.2'
 def jvmTargetVersion = '1.8'
 
 dependencies {
@@ -21,6 +22,13 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:1.2.3"
     implementation "com.lmax:disruptor:3.4.2"
     implementation "com.google.inject:guice:4.2.2"
+    implementation "it.ozimov:embedded-redis:0.7.2"
+    implementation "redis.clients:jedis:3.0.1"
+
+    testCompile "io.mockk:mockk:1.9.3"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junitVersion"
+    testCompile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
+    testCompile "com.github.mifmif:generex:1.0.2"
 }
 
 compileKotlin.kotlinOptions.jvmTarget = jvmTargetVersion

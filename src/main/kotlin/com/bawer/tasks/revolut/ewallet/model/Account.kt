@@ -8,17 +8,17 @@ data class Account (
         val holderName: String,
         val holderSurname: String,
         val currency: Currency,
-        val balance: BigDecimal = BigDecimal.ZERO,
         val transfers: ArrayList<Transfer> = ArrayList()
 ) {
 
+    var balance: BigDecimal = BigDecimal.ZERO
+
     companion object {
-        fun from(accountRequest: AccountRequest, id: Int) = Account(
+        fun from(request: AccountRequest, id: Int) = Account(
                 id = id,
-                holderName = accountRequest.holderName,
-                holderSurname = accountRequest.holderSurname,
-                currency = accountRequest.currency,
-                balance = accountRequest.balance
-        )
+                holderName = request.holderName,
+                holderSurname = request.holderSurname,
+                currency = request.currency
+        ).apply { balance = request.balance }
     }
 }
