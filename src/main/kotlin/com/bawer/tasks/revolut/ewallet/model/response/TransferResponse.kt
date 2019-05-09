@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.response
+package com.bawer.tasks.revolut.ewallet.model.response
 
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 

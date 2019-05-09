@@ -3,9 +3,9 @@ package com.bawer.tasks.revolut.ewallet.controller
 import com.bawer.tasks.revolut.ewallet.model.Transfer
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus.*
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
-import com.bawer.tasks.revolut.ewallet.response.ApiResponse
-import com.bawer.tasks.revolut.ewallet.response.TransferResponse
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.response.ApiResponse
+import com.bawer.tasks.revolut.ewallet.model.response.TransferResponse
 import com.bawer.tasks.revolut.ewallet.service.TransferService
 import ro.pippo.controller.*
 import ro.pippo.controller.extractor.Body

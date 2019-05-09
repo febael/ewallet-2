@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.response
+package com.bawer.tasks.revolut.ewallet.model.response
 
 class ApiResponse <T> (
         val returnObject: T? = null,

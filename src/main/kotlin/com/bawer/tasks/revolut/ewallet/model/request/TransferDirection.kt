@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.request
+package com.bawer.tasks.revolut.ewallet.model.request
 
 enum class TransferDirection {
     INBOUND,

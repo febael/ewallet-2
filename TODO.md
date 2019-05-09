@@ -115,9 +115,15 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>0%</td>
+        <td>100%</td>
         <td>P1</td>
         <td>TransferRequest validation</td>
+        <td>0.5h</td>
+    </tr>
+    <tr>
+        <td>10%</td>
+        <td>P2</td>
+        <td>No magic strings or numbers</td>
         <td>0.5h</td>
     </tr>
     <tr>

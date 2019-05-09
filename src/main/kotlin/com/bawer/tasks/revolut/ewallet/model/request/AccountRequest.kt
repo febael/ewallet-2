@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.request
+package com.bawer.tasks.revolut.ewallet.model.request
 
 import com.bawer.tasks.revolut.ewallet.model.Currency
 import java.math.BigDecimal

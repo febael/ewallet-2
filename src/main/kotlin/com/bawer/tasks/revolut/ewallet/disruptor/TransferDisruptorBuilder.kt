@@ -1,11 +1,7 @@
 package com.bawer.tasks.revolut.ewallet.disruptor
 
-import LongIdGenerator
-import com.bawer.tasks.revolut.ewallet.myLogger
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
 import com.lmax.disruptor.BusySpinWaitStrategy
 import com.lmax.disruptor.EventFactory
-import com.lmax.disruptor.EventTranslatorOneArg
 import com.lmax.disruptor.WaitStrategy
 import com.lmax.disruptor.dsl.ProducerType
 import java.util.concurrent.ThreadFactory

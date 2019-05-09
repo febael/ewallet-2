@@ -2,7 +2,7 @@ package com.bawer.tasks.revolut.ewallet.service
 
 import com.bawer.tasks.revolut.ewallet.model.Transfer
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 
 interface TransferService {
 

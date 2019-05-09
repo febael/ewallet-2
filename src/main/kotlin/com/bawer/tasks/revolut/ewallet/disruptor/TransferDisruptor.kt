@@ -1,6 +1,6 @@
 package com.bawer.tasks.revolut.ewallet.disruptor
 
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import com.lmax.disruptor.EventFactory
 import com.lmax.disruptor.EventTranslatorOneArg
 import com.lmax.disruptor.WaitStrategy

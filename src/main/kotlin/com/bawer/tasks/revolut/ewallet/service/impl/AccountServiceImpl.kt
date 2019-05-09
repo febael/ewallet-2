@@ -2,8 +2,8 @@ package com.bawer.tasks.revolut.ewallet.service.impl
 
 import com.bawer.tasks.revolut.ewallet.model.Account
 import com.bawer.tasks.revolut.ewallet.repository.AccountRepository
-import com.bawer.tasks.revolut.ewallet.request.AccountRequest
-import com.bawer.tasks.revolut.ewallet.request.TransferDirection
+import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferDirection
 import com.bawer.tasks.revolut.ewallet.service.AccountService
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject

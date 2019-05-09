@@ -2,8 +2,8 @@ package com.bawer.tasks.revolut.ewallet.service
 
 import com.bawer.tasks.revolut.ewallet.model.Account
 import com.bawer.tasks.revolut.ewallet.model.Transfer
-import com.bawer.tasks.revolut.ewallet.request.AccountRequest
-import com.bawer.tasks.revolut.ewallet.request.TransferDirection
+import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferDirection
 
 interface AccountService {
 

@@ -1,6 +1,6 @@
 package com.bawer.tasks.revolut.ewallet.model
 
-import com.bawer.tasks.revolut.ewallet.request.AccountRequest
+import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
 import java.math.BigDecimal
 
 data class Account (

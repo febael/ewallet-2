@@ -2,7 +2,7 @@ package com.bawer.tasks.revolut.ewallet.disruptor
 
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 import com.bawer.tasks.revolut.ewallet.model.TransferType
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import java.math.BigDecimal
 
 class TransferEvent {
@@ -19,7 +19,7 @@ class TransferEvent {
     companion object {
         private val DUMMY_TRANSFER_REQUEST = TransferRequest(
                 type = TransferType.INTERNAL,
-                targetAccountId = Int.MIN_VALUE,
+                targetId = Int.MIN_VALUE,
                 amount = BigDecimal.ZERO
         )
     }

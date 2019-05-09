@@ -1,9 +1,9 @@
 package com.bawer.tasks.revolut.ewallet.controller
 
 import com.bawer.tasks.revolut.ewallet.model.Transfer
-import com.bawer.tasks.revolut.ewallet.request.AccountRequest
-import com.bawer.tasks.revolut.ewallet.request.TransferDirection
-import com.bawer.tasks.revolut.ewallet.response.ApiResponse
+import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferDirection
+import com.bawer.tasks.revolut.ewallet.model.response.ApiResponse
 import com.bawer.tasks.revolut.ewallet.service.AccountService
 import ro.pippo.controller.*
 import ro.pippo.controller.extractor.Body

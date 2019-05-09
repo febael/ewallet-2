@@ -7,7 +7,7 @@ import com.bawer.tasks.revolut.ewallet.repository.cqengine.CQEngineTransferRepos
 import com.bawer.tasks.revolut.ewallet.repository.redis.RedisAccountRepository
 import com.bawer.tasks.revolut.ewallet.repository.redis.RedisWrapper
 import com.bawer.tasks.revolut.ewallet.repository.redis.RedisTransferRepository
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import com.google.gson.Gson
 import com.mifmif.common.regex.Generex
 import org.junit.jupiter.api.*
@@ -60,8 +60,8 @@ object RepositoriesTest {
                 updateFrom(TransferRequest(
                         type = TransferType.DEPOSIT,
                         description = null,
-                        sourceAccountId = null,
-                        targetAccountId = 1,
+                        unvalidatedSourceId = null,
+                        targetId = 1,
                         amount = BigDecimal.TEN,
                         targetDate = null).apply { id = ++transferId }
                 )

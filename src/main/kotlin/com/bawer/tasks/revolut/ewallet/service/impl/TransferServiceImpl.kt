@@ -3,7 +3,7 @@ package com.bawer.tasks.revolut.ewallet.service.impl
 import com.bawer.tasks.revolut.ewallet.disruptor.TransferDisruptor
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
-import com.bawer.tasks.revolut.ewallet.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import com.bawer.tasks.revolut.ewallet.service.TransferService
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
