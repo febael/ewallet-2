@@ -20,100 +20,8 @@ import java.util.stream.Stream
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-object RepositoriesTest {
-
-    private val gson by lazy { Gson() }
-
-    @JvmStatic private val jedisPool by lazy { RedisWrapper.jedisPool }
-
-    private val repositoriesPerModel = arrayOf(
-            arrayOf( // CQEngine
-                    CQEngineAccountRepository(),
-                    CQEngineTransferRepository()),
-            arrayOf( // Redis
-                    RedisAccountRepository(jedisPool, gson),
-                    RedisTransferRepository(jedisPool, gson))
-    )
-
-    private val nameGenerator = Generex("[A-Z][a-z]{2,8}")
-
-    private val firstAccount = nextAccount()
-    private val firstTransfer = nextTransfer()
-
-    private var accountId = 0
-    private var transferId = 0L
-
-    @AfterAll
-    @JvmStatic fun tearDown() {
-        RedisWrapper.tearDown()
-    }
-
-    private fun nextAccount() = Account(
-            ++accountId,
-            nameGenerator.random(),
-            nameGenerator.random(),
-            Currency.EUR
-    )
-
-    private fun nextTransfer() = Transfer.from(
-            TransferEvent().apply {
-                updateFrom(TransferRequest(
-                        type = TransferType.DEPOSIT,
-                        description = null,
-                        unvalidatedSourceId = null,
-                        targetId = 1,
-                        amount = BigDecimal.TEN,
-                        targetDate = null).apply { id = ++transferId }
-                )
-            }, TransferStatus.COMPLETED)
-
-    private fun createStreamOfArguments(vararg parameters: Any): Stream<Arguments> {
-        val tempList = mutableListOf<Pair<Any, Any>>()
-        for (repositories in repositoriesPerModel) {
-            if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
-            tempList.addAll(repositories.zip(parameters))
-        }
-        return tempList.map { Arguments.of(it.first, it.second) }.stream()
-    }
-
-    private fun createStreamOfArguments(vararg parameters: Pair<Any, Any>): Stream<Arguments> {
-        val tempList = mutableListOf<Pair<Any, Pair<Any, Any>>>()
-        for (repositories in repositoriesPerModel) {
-            if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
-            tempList.addAll(repositories.zip(parameters))
-        }
-        return tempList.map { Arguments.of(it.first, it.second.first, it.second.second) }.stream()
-    }
-
-    private fun createStreamOfArguments(vararg parameters: Triple<Any, Any, Any>): Stream<Arguments> {
-        val tempList = mutableListOf<Pair<Any, Triple<Any, Any, Any>>>()
-        for (repositories in repositoriesPerModel) {
-            if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
-            tempList.addAll(repositories.zip(parameters))
-        }
-        return tempList.map { Arguments.of(it.first, it.second.first, it.second.second, it.second.third) }.stream()
-    }
-
-    /**
-     * Providers with given and when clauses
-     */
-    @JvmStatic private fun `given it's empty, when provided with the first object`() =
-            createStreamOfArguments(firstAccount, firstTransfer)
-
-    @JvmStatic private fun `given it holds some object, when provided with that object`() =
-            createStreamOfArguments(firstAccount, firstTransfer)
-
-    @JvmStatic private fun `given it holds some object, when provided with that object and its id`() =
-            createStreamOfArguments(Pair(firstAccount, firstAccount.id), Pair(firstTransfer, firstTransfer.id))
-
-    @JvmStatic private fun `given it holds some object, when provided with an id it doesn't hold`() =
-            createStreamOfArguments(accountId + 1, transferId + 1)
-
-    @JvmStatic private fun `given it holds some object, when provided with next two new objects`() =
-            createStreamOfArguments(
-                    Triple(nextAccount(), nextAccount(), accountId),
-                    Triple(nextTransfer(), nextTransfer(), transferId.toInt())
-            )
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class RepositoriesTest {
 
     @ParameterizedTest
     @MethodSource("given it's empty, when provided with the first object")
@@ -151,5 +59,102 @@ object RepositoriesTest {
     ) {
         assertTrue(repository.insertAll(nextObject, nextNextObject))
         assertEquals(expectedSize, repository.count())
+    }
+
+    companion object {
+
+        @JvmStatic private val jedisPool by lazy { RedisWrapper.jedisPool }
+
+        @AfterAll
+        @JvmStatic internal fun tearDown() {
+            RedisWrapper.tearDown()
+        }
+
+        private val nameGenerator = Generex("[A-Z][a-z]{2,8}")
+
+        private val firstAccount = nextAccount()
+        private val firstTransfer = nextTransfer()
+
+        private var accountId = 0
+        private var transferId = 0L
+
+        private fun nextAccount() = Account(
+                ++accountId,
+                nameGenerator.random(),
+                nameGenerator.random(),
+                Currency.EUR
+        )
+
+        private fun nextTransfer() = Transfer.from(
+                TransferEvent().apply {
+                    updateFrom(TransferRequest(
+                            type = TransferType.DEPOSIT,
+                            description = null,
+                            unvalidatedSourceId = null,
+                            targetId = 1,
+                            amount = BigDecimal.TEN,
+                            targetDate = null).apply { id = ++transferId }
+                    )
+                }, TransferStatus.COMPLETED)
+
+        private val gson by lazy { Gson() }
+
+        private val repositoriesPerModel = arrayOf(
+                arrayOf( // CQEngine
+                        CQEngineAccountRepository(),
+                        CQEngineTransferRepository()),
+                arrayOf( // Redis
+                        RedisAccountRepository(jedisPool, gson),
+                        RedisTransferRepository(jedisPool, gson))
+        )
+
+        /**
+         * Providers with given and when clauses
+         */
+        @JvmStatic private fun `given it's empty, when provided with the first object`() =
+                createStreamOfArguments(firstAccount, firstTransfer)
+
+        @JvmStatic private fun `given it holds some object, when provided with that object`() =
+                createStreamOfArguments(firstAccount, firstTransfer)
+
+        @JvmStatic private fun `given it holds some object, when provided with that object and its id`() =
+                createStreamOfArguments(Pair(firstAccount, firstAccount.id), Pair(firstTransfer, firstTransfer.id))
+
+        @JvmStatic private fun `given it holds some object, when provided with an id it doesn't hold`() =
+                createStreamOfArguments(accountId + 1, transferId + 1)
+
+        @JvmStatic private fun `given it holds some object, when provided with next two new objects`() =
+                createStreamOfArguments(
+                        Triple(nextAccount(), nextAccount(), accountId),
+                        Triple(nextTransfer(), nextTransfer(), transferId.toInt())
+                )
+
+        private fun createStreamOfArguments(vararg parameters: Any): Stream<Arguments> {
+            val tempList = mutableListOf<Pair<Any, Any>>()
+            for (repositories in repositoriesPerModel) {
+                if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
+                tempList.addAll(repositories.zip(parameters))
+            }
+            return tempList.map { Arguments.of(it.first, it.second) }.stream()
+        }
+
+        private fun createStreamOfArguments(vararg parameters: Pair<Any, Any>): Stream<Arguments> {
+            val tempList = mutableListOf<Pair<Any, Pair<Any, Any>>>()
+            for (repositories in repositoriesPerModel) {
+                if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
+                tempList.addAll(repositories.zip(parameters))
+            }
+            return tempList.map { Arguments.of(it.first, it.second.first, it.second.second) }.stream()
+        }
+
+        private fun createStreamOfArguments(vararg parameters: Triple<Any, Any, Any>): Stream<Arguments> {
+            val tempList = mutableListOf<Pair<Any, Triple<Any, Any, Any>>>()
+            for (repositories in repositoriesPerModel) {
+                if (parameters.size != repositories.size) RuntimeException("Invalid test setup")
+                tempList.addAll(repositories.zip(parameters))
+            }
+            return tempList.map { Arguments.of(it.first, it.second.first, it.second.second, it.second.third) }.stream()
+        }
+
     }
 }

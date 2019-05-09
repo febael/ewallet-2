@@ -18,7 +18,7 @@ class TransferEvent {
 
     companion object {
         private val DUMMY_TRANSFER_REQUEST = TransferRequest(
-                type = TransferType.INTERNAL,
+                type = TransferType.DEPOSIT,
                 targetId = Int.MIN_VALUE,
                 amount = BigDecimal.ZERO
         )
