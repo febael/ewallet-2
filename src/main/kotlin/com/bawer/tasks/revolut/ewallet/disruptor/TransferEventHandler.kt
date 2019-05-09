@@ -30,11 +30,13 @@ internal object TransferEventHandler : EventHandler<TransferEvent> {
     private fun internalTransfer(event: TransferEvent) {
         with(event.request) {
             val transfer = Transfer.from(event, PROCESSING)
-            val (fromAccount, toAccount) = accountRepository.getTwo(sourceId!!, targetId)
-            if (fromAccount == null || toAccount == null || fromAccount.balance < amount) transfer.setFailedStatus() else {
-                fromAccount.balance -= amount
-                toAccount.balance += amount
-                if (accountRepository.upsertAll(fromAccount, toAccount)) transfer.setCompletedStatus()
+            val (from, to) = accountRepository.getTwo(sourceId!!, targetId)
+            if (from == null || to == null || from.balance < amount || from.currency != to.currency) {
+                transfer.setFailedStatus()
+            } else {
+                from.balance -= amount
+                to.balance += amount
+                if (accountRepository.upsertAll(from, to)) transfer.setCompletedStatus()
                 else transfer.setFailedStatus()
             }
             transferRepository.insert(transfer)
