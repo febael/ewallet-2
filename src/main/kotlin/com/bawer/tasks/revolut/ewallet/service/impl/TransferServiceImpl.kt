@@ -17,10 +17,13 @@ class TransferServiceImpl @Inject constructor(
 
     /**
      * For keeping statuses of not-yet resolved or future transfers
+     * TODO : Eviction not implemented
      */
     private val statusLookupTable = HashMap<Long, TransferRequest>(64 * 1024)
 
-    override fun get(id: Long): TransferStatus? = statusLookupTable[id]?.let { it.status } ?: repository.get(id)?.status
+    override fun get(id: Long) = repository.get(id)
+
+    override fun getStatus(id: Long) = statusLookupTable[id]?.status ?: repository.get(id)?.status
 
     /**
      * TODO : Not fully correct behaviour

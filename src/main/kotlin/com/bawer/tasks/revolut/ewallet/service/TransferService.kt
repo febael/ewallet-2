@@ -8,7 +8,9 @@ interface TransferService {
 
     fun getAll(status: TransferStatus? = null): List<Transfer>
 
-    fun get(id: Long): TransferStatus?
+    fun get(id: Long): Transfer?
+
+    fun getStatus(id: Long): TransferStatus?
 
     fun create(request: TransferRequest): Long
 

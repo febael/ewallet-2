@@ -23,10 +23,10 @@ class TransferController @Inject constructor( private val service: TransferServi
         return ApiResponse(returnObject = service.getAll(status))
     }
 
-    @GET("/{id}")
+    @GET("/{id}/status")
     @Produces(Produces.JSON)
     @NoCache
-    fun get(@Param id: Long) = service.get(id)?.let {
+    fun get(@Param id: Long) = service.getStatus(id)?.let {
         ApiResponse(returnObject = createTransferResponse(it, id))
     } ?: ApiResponse.notFound("Transfer doesn't exist").also { response.status(404) }
 
