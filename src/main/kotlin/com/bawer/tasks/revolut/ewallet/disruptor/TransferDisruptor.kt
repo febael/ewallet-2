@@ -2,6 +2,8 @@ package com.bawer.tasks.revolut.ewallet.disruptor
 
 import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import com.bawer.tasks.revolut.ewallet.myLogger
+import com.bawer.tasks.revolut.ewallet.repository.AccountRepository
+import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
 import com.lmax.disruptor.EventFactory
 import com.lmax.disruptor.EventTranslatorOneArg
 import com.lmax.disruptor.RingBuffer
@@ -16,11 +18,13 @@ class TransferDisruptor(
         ringBufferSize: Int,
         threadFactory: ThreadFactory,
         producerType: ProducerType,
-        waitStrategy: WaitStrategy
+        waitStrategy: WaitStrategy,
+        accountRepository: AccountRepository,
+        transferRepository: TransferRepository
 ) : Disruptor<TransferEvent>(eventFactory, ringBufferSize, threadFactory, producerType, waitStrategy) {
 
     init {
-        handleEventsWith(TransferEventHandler)
+        handleEventsWith( TransferEventHandler(accountRepository, transferRepository) )
     }
 
     private val translator = EventTranslatorOneArg<TransferEvent, TransferRequest> { event, _, request ->

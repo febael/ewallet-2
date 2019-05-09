@@ -13,11 +13,7 @@ abstract class RedisRepository<T, I>(
         protected val hashName: String
 ) : Repository<T, I> {
 
-    override val shouldSaveObjectsBack = true
-
     protected val jedis get() = jedisPool.resource
-
-    abstract fun getId(obj: T): I
 
     protected fun serialize(obj: T): String = gson.toJson(obj)
 

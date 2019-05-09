@@ -6,16 +6,12 @@ import com.bawer.tasks.revolut.ewallet.model.TransferType
 import com.bawer.tasks.revolut.ewallet.repository.AccountRepository
 import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
 import com.lmax.disruptor.EventHandler
-import javax.inject.Inject
 
 
-internal object TransferEventHandler : EventHandler<TransferEvent> {
-
-    @Inject
-    private lateinit var accountRepository: AccountRepository
-
-    @Inject
-    private lateinit var transferRepository: TransferRepository
+class TransferEventHandler(
+        private val accountRepository: AccountRepository,
+        private val transferRepository: TransferRepository
+) : EventHandler<TransferEvent> {
 
     override fun onEvent(event: TransferEvent, sequence: Long, endOfBatch: Boolean) = when(event.request.type) {
         TransferType.WITHDRAW -> withdraw(event)

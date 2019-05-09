@@ -16,10 +16,14 @@ import com.google.inject.Module
 class GuiceModule : Module {
 
     override fun configure(binder: Binder) {
+        val accountRepository = CQEngineAccountRepository()
+        val transferRepository = CQEngineTransferRepository()
+        binder.bind(AccountRepository::class.java).toInstance(accountRepository)
+        binder.bind(TransferRepository::class.java).toInstance(transferRepository)
         binder.bind(AccountService::class.java).to(AccountServiceImpl::class.java).asEagerSingleton()
         binder.bind(TransferService::class.java).to(TransferServiceImpl::class.java).asEagerSingleton()
-        binder.bind(TransferDisruptor::class.java).toInstance(TransferDisruptorBuilder.buildDefault())
-        binder.bind(AccountRepository::class.java).to(CQEngineAccountRepository::class.java).asEagerSingleton()
-        binder.bind(TransferRepository::class.java).to(CQEngineTransferRepository::class.java).asEagerSingleton()
+        binder.bind(TransferDisruptor::class.java).toInstance(
+                TransferDisruptorBuilder.buildDefault(accountRepository, transferRepository)
+        )
     }
 }

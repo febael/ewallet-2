@@ -18,4 +18,6 @@ class CQEngineAccountRepository : AccountRepository, CQEngineRepository<Account,
     init {
         initialize()
     }
+
+    override fun getId(obj: Account) = obj.id
 }

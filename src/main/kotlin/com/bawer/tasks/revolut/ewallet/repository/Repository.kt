@@ -2,7 +2,7 @@ package com.bawer.tasks.revolut.ewallet.repository
 
 interface Repository <T, I> {
 
-    val shouldSaveObjectsBack: Boolean
+    fun getId(obj: T): I
 
     fun get(id: I): T?
 

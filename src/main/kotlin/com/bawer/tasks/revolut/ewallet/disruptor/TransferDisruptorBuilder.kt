@@ -1,5 +1,7 @@
 package com.bawer.tasks.revolut.ewallet.disruptor
 
+import com.bawer.tasks.revolut.ewallet.repository.AccountRepository
+import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
 import com.lmax.disruptor.BusySpinWaitStrategy
 import com.lmax.disruptor.EventFactory
 import com.lmax.disruptor.WaitStrategy
@@ -23,18 +25,32 @@ object TransferDisruptorBuilder {
 
     private const val DEFAULT_RING_BUFFER_SIZE = 64 * 1024
 
-    fun buildDefault() = TransferDisruptor(
+    fun buildDefault(
+            accountRepository: AccountRepository,
+            transferRepository: TransferRepository
+    ) = TransferDisruptor(
             DEFAULT_EVENT_FACTORY,
             DEFAULT_RING_BUFFER_SIZE,
             DEFAULT_THREAD_FACTORY,
             DEFAULT_PRODUCER_TYPE,
-            DEFAULT_WAIT_STRATEGY)
+            DEFAULT_WAIT_STRATEGY,
+            accountRepository,
+            transferRepository)
 
     fun buildCustom(
             eventFactory: EventFactory<TransferEvent> = DEFAULT_EVENT_FACTORY,
             ringBufferSize: Int = DEFAULT_RING_BUFFER_SIZE,
             threadFactory: ThreadFactory = DEFAULT_THREAD_FACTORY,
             producerType: ProducerType = DEFAULT_PRODUCER_TYPE,
-            waitStrategy: WaitStrategy = DEFAULT_WAIT_STRATEGY
-    ) = TransferDisruptor(eventFactory, ringBufferSize, threadFactory, producerType, waitStrategy)
+            waitStrategy: WaitStrategy = DEFAULT_WAIT_STRATEGY,
+            accountRepository: AccountRepository,
+            transferRepository: TransferRepository
+    ) = TransferDisruptor(
+            eventFactory,
+            ringBufferSize,
+            threadFactory,
+            producerType,
+            waitStrategy,
+            accountRepository,
+            transferRepository)
 }

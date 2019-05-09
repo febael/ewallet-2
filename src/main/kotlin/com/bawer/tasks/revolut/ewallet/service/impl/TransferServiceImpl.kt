@@ -23,7 +23,7 @@ class TransferServiceImpl @Inject constructor(
 
     override fun get(id: Long) = repository.get(id)
 
-    override fun getStatus(id: Long) = statusLookupTable[id]?.status ?: repository.get(id)?.status
+    override fun getStatus(id: Long) = repository.get(id)?.status ?: statusLookupTable[id]?.status
 
     /**
      * TODO : Not fully correct behaviour

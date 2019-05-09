@@ -28,4 +28,6 @@ class CQEngineTransferRepository : TransferRepository, CQEngineRepository<Transf
     }
 
     override fun getAll(status: TransferStatus)= collection.retrieve( equal(statusAttribute, status) ).toList()
+
+    override fun getId(obj: Transfer) = obj.id
 }

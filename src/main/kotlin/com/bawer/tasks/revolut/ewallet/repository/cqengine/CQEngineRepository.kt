@@ -9,8 +9,6 @@ import com.googlecode.cqengine.resultset.common.NoSuchObjectException
 
 abstract class CQEngineRepository<T, I> : Repository<T, I> {
 
-    override val shouldSaveObjectsBack = true
-
     internal abstract val collection: IndexedCollection<T>
 
     internal abstract val idAttribute : SimpleAttribute<T, I>
@@ -41,7 +39,7 @@ abstract class CQEngineRepository<T, I> : Repository<T, I> {
 
     override fun count() = collection.size
 
-    override fun delete(id: I) = TODO("not implemented")
+    override fun delete(id: I) = get(id)?.let { collection.remove(it) } ?: false
 
     override fun deleteAll(vararg ids: I) = TODO("not implemented")
 }
