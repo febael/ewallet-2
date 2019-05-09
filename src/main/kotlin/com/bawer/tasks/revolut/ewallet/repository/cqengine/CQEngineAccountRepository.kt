@@ -9,8 +9,6 @@ import com.googlecode.cqengine.query.option.QueryOptions
 
 class CQEngineAccountRepository : AccountRepository, CQEngineRepository<Account, Int>() {
 
-    override val saveAllAfterInternalTransfer = false
-
     override val collection = ConcurrentIndexedCollection<Account>()
 
     override val idAttribute = object : SimpleAttribute<Account, Int>(Account::id.name) {

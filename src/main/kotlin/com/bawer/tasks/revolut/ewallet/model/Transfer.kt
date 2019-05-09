@@ -13,9 +13,15 @@ data class Transfer (
         val amount: BigDecimal,
         val targetDate: ZonedDateTime?,
         val receiveTimestamp: Long,
-        val completionTimestamp: Long,
-        val status: TransferStatus
+        val completionTimestamp: Long
 ) {
+
+    var status: TransferStatus = TransferStatus.DRAFT
+        private set
+
+    fun setFailedStatus() { status = TransferStatus.FAILED }
+
+    fun setCompletedStatus() { status = TransferStatus.COMPLETED }
 
     companion object {
         fun from(event: TransferEvent, status: TransferStatus) = Transfer(
@@ -27,8 +33,7 @@ data class Transfer (
                 amount = event.request.amount,
                 targetDate = event.request.targetDate,
                 receiveTimestamp = event.receiveTimestamp,
-                completionTimestamp = System.currentTimeMillis(),
-                status = status
-        )
+                completionTimestamp = System.currentTimeMillis()
+        ).apply { this.status = status }
     }
 }

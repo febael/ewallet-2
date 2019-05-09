@@ -2,13 +2,19 @@ package com.bawer.tasks.revolut.ewallet.repository
 
 interface Repository <T, I> {
 
+    val shouldSaveObjectsBack: Boolean
+
     fun get(id: I): T?
 
     fun getAll(): List<T>
 
-    fun save(obj: T): Boolean
+    fun insert(obj: T): Boolean
 
-    fun saveAll(vararg objs: T): Boolean
+    fun insertAll(vararg objs: T): Boolean
+
+    fun upsert(obj: T): Boolean
+
+    fun upsertAll(vararg objs: T): Boolean
 
     fun delete(id: I): Boolean
 

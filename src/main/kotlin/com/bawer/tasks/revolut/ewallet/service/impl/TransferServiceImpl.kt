@@ -2,10 +2,9 @@ package com.bawer.tasks.revolut.ewallet.service.impl
 
 import com.bawer.tasks.revolut.ewallet.disruptor.TransferDisruptor
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
-import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
 import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
+import com.bawer.tasks.revolut.ewallet.repository.TransferRepository
 import com.bawer.tasks.revolut.ewallet.service.TransferService
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
@@ -16,7 +15,10 @@ class TransferServiceImpl @Inject constructor(
 
     private val idGenerator = AtomicLong(0)
 
-    private val statusLookupTable = ConcurrentHashMap<Long, TransferRequest>(64 * 1024)
+    /**
+     * For keeping statuses of not-yet resolved or future transfers
+     */
+    private val statusLookupTable = HashMap<Long, TransferRequest>(64 * 1024)
 
     override fun get(id: Long): TransferStatus? = statusLookupTable[id]?.let { it.status } ?: repository.get(id)?.status
 

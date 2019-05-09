@@ -44,7 +44,7 @@ object RepositoriesTest {
     private var transferId = 0L
 
     @AfterAll
-    @JvmStatic internal fun tearDown() {
+    @JvmStatic fun tearDown() {
         RedisWrapper.tearDown()
     }
 
@@ -120,14 +120,14 @@ object RepositoriesTest {
     @Order(1)
     fun <T, I> `then repository should be able to save initial object`(
             repository: Repository<T, I>, objectToSave: T
-    ) = assertTrue(repository.save(objectToSave))
+    ) = assertTrue(repository.insert(objectToSave))
 
     @ParameterizedTest
     @MethodSource("given it holds some object, when provided with that object")
     @Order(2)
     fun <T, I> `then repository shouldn't let saving over existing objects`(
             repository: Repository<T, I>, objectToSave: T
-    ) = assertFalse(repository.save(objectToSave))
+    ) = assertFalse(repository.insert(objectToSave))
 
     @ParameterizedTest
     @MethodSource("given it holds some object, when provided with that object and its id")
@@ -149,7 +149,7 @@ object RepositoriesTest {
     fun <T, I> `then repository should be able to save multiple objects at once and return correct size`(
             repository: Repository<T, I>, nextObject: T, nextNextObject: T, expectedSize: Int
     ) {
-        assertTrue(repository.saveAll(nextObject, nextNextObject))
+        assertTrue(repository.insertAll(nextObject, nextNextObject))
         assertEquals(expectedSize, repository.count())
     }
 }

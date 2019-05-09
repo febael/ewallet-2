@@ -9,6 +9,8 @@ import com.googlecode.cqengine.resultset.common.NoSuchObjectException
 
 abstract class CQEngineRepository<T, I> : Repository<T, I> {
 
+    override val shouldSaveObjectsBack = true
+
     internal abstract val collection: IndexedCollection<T>
 
     internal abstract val idAttribute : SimpleAttribute<T, I>
@@ -23,10 +25,19 @@ abstract class CQEngineRepository<T, I> : Repository<T, I> {
 
     override fun getAll(): List<T> = collection.toList()
 
-    override fun save(obj: T) = collection.add(obj)
+    override fun insert(obj: T) = collection.add(obj)
 
-    // TODO : Creation of a list object overhead at addAll
-    override fun saveAll(vararg objs: T) = collection.addAll(objs)
+    override fun insertAll(vararg objs: T) = collection.addAll(objs)
+
+    /**
+     * CQEngine doesn't need updates, do nothing
+     */
+    override fun upsert(obj: T) = true
+
+    /**
+     * CQEngine doesn't need updates, do nothing
+     */
+    override fun upsertAll(vararg objs: T) = true
 
     override fun count() = collection.size
 

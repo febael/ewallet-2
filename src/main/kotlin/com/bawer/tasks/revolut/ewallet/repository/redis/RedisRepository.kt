@@ -3,6 +3,7 @@ package com.bawer.tasks.revolut.ewallet.repository.redis
 import com.bawer.tasks.revolut.ewallet.repository.Repository
 import com.google.gson.Gson
 import redis.clients.jedis.JedisPool
+import java.lang.Boolean.TRUE
 
 
 abstract class RedisRepository<T, I>(
@@ -11,6 +12,8 @@ abstract class RedisRepository<T, I>(
         private val gson: Gson,
         protected val hashName: String
 ) : Repository<T, I> {
+
+    override val shouldSaveObjectsBack = true
 
     protected val jedis get() = jedisPool.resource
 
@@ -26,9 +29,25 @@ abstract class RedisRepository<T, I>(
 
     override fun getAll(): List<T> = jedis.hgetAll(hashName).values.map { this.deserialize(it)!! }
 
-    override fun save(obj: T) = jedis.hsetnx(hashName, obj.id(), serialize(obj))?.let { it == 1L } ?: false
+    /**
+     * Doesn't allow update
+     */
+    override fun insert(obj: T) = jedis.hsetnx(hashName, obj.id(), serialize(obj))?.let { it == 1L } ?: false
 
-    override fun saveAll(vararg objs: T): Boolean {
+    /**
+     * Doesn't allow updates, a bit enigmatic implementation
+     */
+    override fun insertAll(vararg objs: T) = objs.mapTo(HashSet(), this::insert).run { size == 1 && contains(TRUE) }
+
+    /**
+     * Allows update
+     */
+    override fun upsert(obj: T) = jedis.hset(hashName, obj.id(), serialize(obj))?.let { it == 1L } ?: false
+
+    /**
+     * Allows updates
+     */
+    override fun upsertAll(vararg objs: T): Boolean {
         val tempMap = objs.associate { it.id() to serialize(it) }
         jedis.hmset(hashName, tempMap)!!.let { return it == "OK" }
     }

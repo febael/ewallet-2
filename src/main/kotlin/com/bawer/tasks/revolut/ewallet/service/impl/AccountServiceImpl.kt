@@ -13,14 +13,13 @@ class AccountServiceImpl @Inject constructor(private val repository: AccountRepo
 
     private val idGenerator = AtomicInteger(0)
 
+    private val nextId get() = idGenerator.incrementAndGet()
+
     override fun getAll() = repository.getAll()
 
-    override fun create(request: AccountRequest) = Account.from(request, idGenerator.incrementAndGet()).apply {
-            repository.save(this)
-    }
+    override fun create(request: AccountRequest) = Account.from(request, nextId).apply { repository.insert(this) }
 
     override fun get(id: Int) = repository.get(id)
 
-    override fun getTransfers(id: Int, direction: TransferDirection, limit: Int, after: Int) =
-        TODO("not implemented")
+    override fun getTransfers(id: Int, direction: TransferDirection, limit: Int, after: Int) = TODO("not implemented")
 }
