@@ -1,5 +1,8 @@
 package com.bawer.tasks.revolut.ewallet.model.request
 
+import com.bawer.tasks.revolut.ewallet.ERROR_INVALID_AMOUNT
+import com.bawer.tasks.revolut.ewallet.ERROR_INVALID_TARGET_DATE
+import com.bawer.tasks.revolut.ewallet.ERROR_SOURCE_EQUALS_TARGET
 import com.bawer.tasks.revolut.ewallet.ERROR_SOURCE_ID_REQUIRED
 import com.bawer.tasks.revolut.ewallet.model.TransferStatus
 import com.bawer.tasks.revolut.ewallet.model.TransferType
@@ -11,22 +14,38 @@ import java.time.ZonedDateTime
 
 data class TransferRequest (
         val type: TransferType,
-        val description: String? = null,
+        @SerializedName("description") private val unvalidatedDescription: String? = null,
         @SerializedName("sourceId") private val unvalidatedSourceId: Int? = null,
         val targetId: Int,
         val amount: BigDecimal,
-        val targetDate: ZonedDateTime? = null,
-        var status: TransferStatus = TransferStatus.DRAFT
+        val targetDate: ZonedDateTime? = null
 ) {
 
     var id: Long = Long.MIN_VALUE
 
+    var status: TransferStatus = TransferStatus.DRAFT
+
     val sourceId: Int?
 
-    init { // validate sourceId here
-        if (type == INTERNAL && unvalidatedSourceId == null) throw InvalidRequestException(ERROR_SOURCE_ID_REQUIRED)
-        else sourceId = unvalidatedSourceId
+    val description: String
+
+    init { // validate here
+        if (type == INTERNAL) when (unvalidatedSourceId) {
+            null -> throw InvalidRequestException(ERROR_SOURCE_ID_REQUIRED)
+            targetId -> throw InvalidRequestException(ERROR_SOURCE_EQUALS_TARGET)
+        }
+        if (amount <= BigDecimal.ZERO) throw InvalidRequestException(ERROR_INVALID_AMOUNT)
+        // TODO : add here amount maximum valid check
+        if (targetDate != null && targetDate.isBefore(ZonedDateTime.now().plusMinutes(10))) {
+            throw InvalidRequestException(ERROR_INVALID_TARGET_DATE)
+        }
+        description = unvalidatedDescription?.substring(0, MAX_DESCRIPTION_LENGTH) ?: ""
+        sourceId = unvalidatedSourceId
     }
 
     val immediate: Boolean by lazy { targetDate?.run { false } ?: true }
+
+    companion object {
+        private const val MAX_DESCRIPTION_LENGTH = 500
+    }
 }

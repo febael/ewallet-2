@@ -21,7 +21,7 @@ import java.util.stream.Stream
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class RepositoriesTest {
+class RepositoriesTests {
 
     @ParameterizedTest
     @MethodSource("given it's empty, when provided with the first object")
@@ -85,17 +85,13 @@ class RepositoriesTest {
                 Currency.EUR
         )
 
-        private fun nextTransfer() = Transfer.from(
-                TransferEvent().apply {
-                    updateFrom(TransferRequest(
-                            type = TransferType.DEPOSIT,
-                            description = null,
-                            unvalidatedSourceId = null,
-                            targetId = 1,
-                            amount = BigDecimal.TEN,
-                            targetDate = null).apply { id = ++transferId }
-                    )
-                }, TransferStatus.COMPLETED)
+        private fun nextTransfer() =
+                Transfer.from(
+                        TransferEvent().updateFrom(
+                                TransferRequest(TransferType.DEPOSIT, targetId = 1, amount = BigDecimal.TEN).apply {
+                                    id = ++transferId
+                                }
+                        ), TransferStatus.COMPLETED)
 
         private val gson by lazy { Gson() }
 

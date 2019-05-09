@@ -11,8 +11,8 @@ class TransferEvent {
     var request: TransferRequest = DUMMY_TRANSFER_REQUEST
         private set
 
-    fun updateFrom(request: TransferRequest) {
-        this.receiveTimestamp = System.currentTimeMillis()
+    fun updateFrom(request: TransferRequest) = this.also {
+        receiveTimestamp = System.currentTimeMillis()
         this.request = request.apply { status = TransferStatus.RECEIVED }
     }
 
@@ -20,7 +20,7 @@ class TransferEvent {
         private val DUMMY_TRANSFER_REQUEST = TransferRequest(
                 type = TransferType.DEPOSIT,
                 targetId = Int.MIN_VALUE,
-                amount = BigDecimal.ZERO
+                amount = BigDecimal.ONE
         )
     }
 }

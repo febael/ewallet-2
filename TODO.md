@@ -121,7 +121,7 @@
         <td>0.5h</td>
     </tr>
     <tr>
-        <td>10%</td>
+        <td>40%</td>
         <td>P2</td>
         <td>No magic strings or numbers</td>
         <td>0.5h</td>
