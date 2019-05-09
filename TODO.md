@@ -67,7 +67,7 @@
         <td>3h</td>
     </tr>
     <tr>
-        <td>10%</td>
+        <td>100%</td>
         <td>P0</td>
         <td>Handle errors and send ErrorResponse s</td>
         <td>1h</td>
@@ -97,7 +97,7 @@
         <td>3h</td>
     </tr>
     <tr>
-        <td>0%</td>
+        <td>20%</td>
         <td>P0</td>
         <td>Add missing gradle tasks for ease of use</td>
         <td>1h</td>

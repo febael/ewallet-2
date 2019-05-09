@@ -10,6 +10,8 @@ class ApiResponse <T> (
 
         fun notFound(description: String? = null) = ApiResponse(null, "NOT_FOUND", description)
 
-        fun notCancellable(description: String? = null) = ApiResponse(null, "NOT_FOUND", description)
+        fun notCancellable(description: String? = null) = ApiResponse(null, "NOT_CANCELLABLE", description)
+
+        fun failed(description: String? = null) = ApiResponse(null, "FAILED", description)
     }
 }
