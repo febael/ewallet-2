@@ -13,7 +13,7 @@ import com.bawer.tasks.revolut.ewallet.service.impl.TransferServiceImpl
 import com.google.inject.Binder
 import com.google.inject.Module
 
-class GuiceModule : Module {
+class EWalletServiceModule : Module {
 
     override fun configure(binder: Binder) {
         val accountRepository = CQEngineAccountRepository()

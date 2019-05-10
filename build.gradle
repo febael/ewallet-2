@@ -64,7 +64,7 @@ test {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'com.bawer.tasks.revolut.ewallet.EWalletServiceApplicationKt'
+        attributes 'Main-Class': 'com.bawer.tasks.revolut.ewallet.EWalletServiceStarterKt'
     }
     from { [
             configurations.compile.collect { it.isDirectory() ? it : zipTree(it) },

@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.test.functional
+package com.bawer.tasks.revolut.ewallet.test
 
 import com.bawer.tasks.revolut.ewallet.repository.redis.RedisAccountRepository
 import com.bawer.tasks.revolut.ewallet.repository.redis.RedisTransferRepository

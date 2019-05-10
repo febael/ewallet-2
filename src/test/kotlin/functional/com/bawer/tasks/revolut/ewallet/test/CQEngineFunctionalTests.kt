@@ -1,4 +1,4 @@
-package com.bawer.tasks.revolut.ewallet.test.functional
+package com.bawer.tasks.revolut.ewallet.test
 
 import com.bawer.tasks.revolut.ewallet.repository.cqengine.CQEngineAccountRepository
 import com.bawer.tasks.revolut.ewallet.repository.cqengine.CQEngineTransferRepository
