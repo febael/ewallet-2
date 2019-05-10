@@ -50,34 +50,67 @@ abstract class BaseFunctionalTests {
     @Test
     @Order(1)
     fun `when a valid request arrives, then an account should be created`() {
-        val request = createAnAccount()
-        val account = accountService.create(request)
-        validateCreationRequest(account, request)
-        createdAccounts.add(account)
+        createAccountAndCheck(createAccountRequestObject())
     }
 
     @Test
     @Order(2)
     fun `when another valid request arrives, then another account should be created`() {
-        val request = createAnAccount()
-        val account = accountService.create(request)
-        validateCreationRequest(account, request)
-        createdAccounts.add(account)
+        createAccountAndCheck(createAccountRequestObject())
     }
 
     @Test
     @Order(3)
-    fun `when a valid request arrives, then a transferEvent should be submitted to the disruptor`() {
-        val transferId = transferService.create(depositFirstCreatedAccountBy10)
-        val transferStatus = transferService.getStatus(transferId)
-        assertNotNull(transferStatus)
-        transferIds.add(transferId)
+    fun `when a valid deposit request arrives, then a transferEvent should be submitted to the disruptor`() {
+        createTransferAndCheck(depositFirst10)
     }
 
     @Test
     @Order(4)
     fun `given previous transfer request, when enough time passes, then transfer should be finalized successfully`() {
-        val id = transferIds.last()
+        checkTransferStatusCompleted(transferIds.last())
+    }
+
+    @Test
+    @Order(5)
+    fun `given a successful deposit, when account is requested, then correct balance should be seen`() {
+        checkFirstAccountBalance(BigDecimal.TEN)
+    }
+
+    @Test
+    @Order(6)
+    fun `when a valid transfer request but with not enough balance arrives, then transfer should fail`() {
+        createTransferAndCheck(transferFromSecondToFirstAccount10)
+        checkTransferStatusFailed(transferIds.last())
+    }
+
+    @Test
+    @Order(7)
+    fun `when a valid withdraw request but with not enough balance arrives, then transfer should fail`() {
+        createTransferAndCheck(withdrawFromSecond10)
+        checkTransferStatusFailed(transferIds.last())
+    }
+
+    private fun createTransferAndCheck(request: TransferRequest) {
+        val transferId = transferService.create(request)
+        val transferStatus = transferService.getStatus(transferId)
+        assertNotNull(transferStatus)
+        transferIds.add(transferId)
+    }
+
+    private fun createAccountAndCheck(request: AccountRequest) {
+        val account = accountService.create(request)
+        validateCreationRequest(account, request)
+        createdAccounts.add(account)
+    }
+
+    private fun checkFirstAccountBalance(expectedBalance: BigDecimal) {
+        val account = accountService.get(createdAccounts.first().id)
+        assertNotNull(account)
+        assertEquals(expectedBalance, account!!.balance)
+    }
+
+    private fun checkTransferStatusCompleted(id: Long) {
         repeat(30) {
             Thread.sleep(50)
             val transferStatus = transferService.getStatus(id)
@@ -85,7 +118,16 @@ abstract class BaseFunctionalTests {
             assert(transferStatus != TransferStatus.FAILED)
         }
         fail<Void>("Couldn't observe status change in time")
+    }
 
+    private fun checkTransferStatusFailed(id: Long) {
+        repeat(30) {
+            Thread.sleep(50)
+            val transferStatus = transferService.getStatus(id)
+            if (transferStatus == TransferStatus.FAILED) return
+            assert(transferStatus != TransferStatus.COMPLETED)
+        }
+        fail<Void>("Couldn't observe status change in time")
     }
 
     private fun validateCreationRequest(account: Account, request: AccountRequest) {
@@ -106,14 +148,28 @@ abstract class BaseFunctionalTests {
 
         private val nameGenerator = Generex("[A-Z][a-z]{2,8}")
 
-        private fun createAnAccount() = AccountRequest(
+        private fun createAccountRequestObject() = AccountRequest(
                 holderName = nameGenerator.random(),
                 holderSurname = nameGenerator.random(),
                 currency = Currency.EUR)
 
-        private val depositFirstCreatedAccountBy10
-            get() = if (createdAccounts.size > 1) {
+        private val depositFirst10
+            get() = if (createdAccounts.size > 0) {
                 TransferRequest(TransferType.DEPOSIT, targetId = createdAccounts[0].id, amount = BigDecimal.TEN)
+            } else throw Exception("Invalid test flow")
+
+        private val withdrawFromSecond10
+            get() = if (createdAccounts.size > 1) {
+                TransferRequest(TransferType.WITHDRAW, targetId = createdAccounts[1].id, amount = BigDecimal.TEN)
+            } else throw Exception("Invalid test flow")
+
+        private val transferFromSecondToFirstAccount10
+            get() = if (createdAccounts.size > 1) {
+                TransferRequest(
+                        TransferType.INTERNAL,
+                        unvalidatedSourceId = createdAccounts[1].id,
+                        targetId = createdAccounts[0].id,
+                        amount = BigDecimal.TEN)
             } else throw Exception("Invalid test flow")
     }
 }
