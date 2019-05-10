@@ -32,6 +32,8 @@ class TransferEventHandler(
             } else {
                 from.balance -= amount
                 to.balance += amount
+                from.transfers.add(transfer)
+                to.transfers.add(transfer)
                 if (accountRepository.upsertAll(from, to)) transfer.setCompletedStatus()
                 else transfer.setFailedStatus()
             }
@@ -42,7 +44,7 @@ class TransferEventHandler(
     private fun withdraw(event: TransferEvent) {
         with (event.request) {
             val transfer = Transfer.from(event, PROCESSING)
-            accountRepository.get(targetId)?.takeIf { it.balance < amount }?.let { account ->
+            accountRepository.get(targetId)?.takeIf { it.balance >= amount }?.let { account ->
                 account.balance -= amount
                 account.transfers.add(transfer)
                 if (accountRepository.upsert(account)) transfer.setCompletedStatus()

@@ -36,9 +36,10 @@ abstract class RedisRepository<T, I>(
     override fun insertAll(vararg objs: T) = objs.mapTo(HashSet(), this::insert).run { size == 1 && contains(TRUE) }
 
     /**
-     * Allows update
+     * Allows update:
+     * 1L return code is insertion, 0L is update
      */
-    override fun upsert(obj: T) = jedis.hset(hashName, obj.id(), serialize(obj))?.let { it == 1L } ?: false
+    override fun upsert(obj: T) = jedis.hset(hashName, obj.id(), serialize(obj))?.let { it == 1L || it == 0L } ?: false
 
     /**
      * Allows updates

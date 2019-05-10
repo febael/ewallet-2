@@ -2,10 +2,7 @@ package com.bawer.tasks.revolut.ewallet.test.functional
 
 import com.bawer.tasks.revolut.ewallet.disruptor.TransferDisruptor
 import com.bawer.tasks.revolut.ewallet.disruptor.TransferDisruptorBuilder
-import com.bawer.tasks.revolut.ewallet.model.Account
-import com.bawer.tasks.revolut.ewallet.model.Currency
-import com.bawer.tasks.revolut.ewallet.model.TransferStatus
-import com.bawer.tasks.revolut.ewallet.model.TransferType
+import com.bawer.tasks.revolut.ewallet.model.*
 import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
 import com.bawer.tasks.revolut.ewallet.model.request.TransferRequest
 import com.bawer.tasks.revolut.ewallet.repository.AccountRepository
@@ -91,6 +88,21 @@ abstract class BaseFunctionalTests {
         checkTransferStatusFailed(transferIds.last())
     }
 
+    @Test
+    @Order(8)
+    fun `given previous 3 transfers, when accounts are requested, then only first account should have a transfer`() {
+        val transfersOfFirst = getTransfersOfTheAccount(createdAccounts[0].id)
+        assertEquals(1, transfersOfFirst.size)
+        val onlyTransfer = transfersOfFirst[0]
+        assertEquals(onlyTransfer.id, transferIds[0])
+        val request = depositFirst10
+        assertEquals(request.type, onlyTransfer.type)
+        assertEquals(request.amount, onlyTransfer.amount)
+        assertEquals(request.targetId, onlyTransfer.targetAccountId)
+        val transfersOfSecond = getTransfersOfTheAccount(createdAccounts[1].id)
+        assertEquals(0, transfersOfSecond.size)
+    }
+
     private fun createTransferAndCheck(request: TransferRequest) {
         val transferId = transferService.create(request)
         val transferStatus = transferService.getStatus(transferId)
@@ -108,6 +120,12 @@ abstract class BaseFunctionalTests {
         val account = accountService.get(createdAccounts.first().id)
         assertNotNull(account)
         assertEquals(expectedBalance, account!!.balance)
+    }
+
+    private fun getTransfersOfTheAccount(id: Int): List<Transfer> {
+        val account = accountService.get(id)
+        assertNotNull(account)
+        return account!!.transfers
     }
 
     private fun checkTransferStatusCompleted(id: Long) {

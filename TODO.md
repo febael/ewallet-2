@@ -79,13 +79,13 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>20%</td>
+        <td>40%</td>
         <td>P0</td>
         <td>Improve code documentation</td>
         <td>1h</td>
     </tr>
     <tr>
-        <td>40%</td>
+        <td>70%</td>
         <td>P0</td>
         <td>FunctionalTests(Service-Disruptor-Repo)</td>
         <td>2h</td>
@@ -104,7 +104,7 @@
     </tr>
     <tr>
         <td>1%</td>
-        <td>P1</td>
+        <td>P0</td>
         <td>RestIntegrationTests (mock services)</td>
         <td>1.5h</td>
     </tr>

@@ -19,6 +19,9 @@ class AccountServiceImpl @Inject constructor(private val repository: AccountRepo
 
     override fun create(request: AccountRequest) = Account.from(request, nextId).apply { repository.insert(this) }
 
+    /**
+     * TODO : nullify transfers, they should be requested with [getTransfers]
+     */
     override fun get(id: Int) = repository.get(id)
 
     override fun getTransfers(id: Int, direction: TransferDirection, limit: Int, after: Int) = TODO("not implemented")
