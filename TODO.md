@@ -79,7 +79,7 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>40%</td>
+        <td>50%</td>
         <td>P0</td>
         <td>Improve code documentation</td>
         <td>1h</td>
@@ -88,12 +88,6 @@
         <td>70%</td>
         <td>P0</td>
         <td>FunctionalTests(Service-Disruptor-Repo)</td>
-        <td>2h</td>
-    </tr>
-    <tr>
-        <td>0%</td>
-        <td>P0</td>
-        <td>PerformanceTests (High load for different repos and maybe different disruptor configs, and metrics)</td>
         <td>3h</td>
     </tr>
     <tr>
@@ -103,10 +97,16 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>1%</td>
+        <td>70%</td>
         <td>P0</td>
         <td>RestIntegrationTests (mock services)</td>
-        <td>1.5h</td>
+        <td>3h</td>
+    </tr>
+    <tr>
+        <td>0%</td>
+        <td>P1</td>
+        <td>PerformanceTests (High load for different repos and maybe different disruptor configs, and metrics)</td>
+        <td>3h</td>
     </tr>
     <tr>
         <td>0%</td>
@@ -121,7 +121,7 @@
         <td>0.5h</td>
     </tr>
     <tr>
-        <td>40%</td>
+        <td>80%</td>
         <td>P2</td>
         <td>No magic strings or numbers</td>
         <td>0.5h</td>

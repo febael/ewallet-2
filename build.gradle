@@ -5,6 +5,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    jcenter()
     mavenLocal()
 }
 
@@ -30,6 +31,7 @@ dependencies {
     testCompile "org.junit.jupiter:junit-jupiter-params:$junitVersion"
     testCompile "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
     testCompile "com.github.mifmif:generex:1.0.2"
+    testCompile "io.ktor:ktor-client-apache:1.1.4"
 }
 
 compileKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
