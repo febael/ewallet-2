@@ -11,11 +11,10 @@ import io.ktor.client.response.readText
 import io.ktor.content.TextContent
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
-import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
 
 @Suppress("TestFunctionName")
-internal abstract class BaseControllerTests {
+internal abstract class BaseControllerTests() {
 
     private val gson = Gson()
 
@@ -45,6 +44,11 @@ internal abstract class BaseControllerTests {
         body = TextContent(gson.toJson(requestBody), contentType = ContentType.Application.Json)
     }.response
 
+    protected suspend fun DELETE(uriString: String) = client.call(formUrlString(uriString)) {
+        method = HttpMethod.Delete
+        port = TEST_PORT
+    }.response
+
     private fun formUrlString(uriString: String) = "$BASE_URL$uriString"
 
     companion object {
@@ -53,9 +57,5 @@ internal abstract class BaseControllerTests {
         private const val BASE_URL = "http://localhost:$TEST_PORT"
 
         private val client = HttpClient()
-
-        @JvmStatic
-        @AfterAll
-        fun tearDown() { client.close() }
     }
 }

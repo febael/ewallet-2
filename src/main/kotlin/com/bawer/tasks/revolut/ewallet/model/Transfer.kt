@@ -27,7 +27,7 @@ data class Transfer (
         fun from(event: TransferEvent, status: TransferStatus) = Transfer(
                 id = event.request.id,
                 type = event.request.type,
-                description = event.request.description,
+                description = event.request.reviewedDescription,
                 sourceAccountId = event.request.sourceId,
                 targetAccountId = event.request.targetId,
                 amount = event.request.amount,

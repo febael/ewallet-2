@@ -97,10 +97,10 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>70%</td>
+        <td>100%</td>
         <td>P0</td>
         <td>RestIntegrationTests (mock services)</td>
-        <td>3h</td>
+        <td>5h</td>
     </tr>
     <tr>
         <td>0%</td>

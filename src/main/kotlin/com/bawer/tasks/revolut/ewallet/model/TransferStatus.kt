@@ -4,6 +4,7 @@ enum class TransferStatus {
     DRAFT,
     RECEIVED,
     PROCESSING,
+    CANCELLED,
     FAILED,
     COMPLETED
 }

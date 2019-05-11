@@ -33,7 +33,7 @@ class TransferServiceImpl @Inject constructor(
     override fun getAll(status: TransferStatus?) = status?.let { repository.getAll(status) } ?: repository.getAll()
 
     override fun create(request: TransferRequest) =
-            if (request.immediate) immediateAction(request) else deferredAction()
+            if (request.isImmediate) immediateAction(request) else deferredAction()
 
     private fun immediateAction(request: TransferRequest): Long {
         request.id = idGenerator.incrementAndGet()

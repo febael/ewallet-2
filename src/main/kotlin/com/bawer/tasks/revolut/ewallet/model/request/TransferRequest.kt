@@ -15,7 +15,7 @@ import java.time.ZonedDateTime
 data class TransferRequest (
         val type: TransferType,
         @SerializedName("description") private val unvalidatedDescription: String? = null,
-        @SerializedName("sourceId") private val unvalidatedSourceId: Int? = null,
+        @SerializedName("optionalSourceId") private val unvalidatedSourceId: Int? = null,
         val targetId: Int,
         val amount: BigDecimal,
         val targetDate: ZonedDateTime? = null
@@ -27,7 +27,7 @@ data class TransferRequest (
 
     val sourceId: Int?
 
-    val description: String
+    val reviewedDescription: String
 
     init { // validate here
         if (type == INTERNAL) when (unvalidatedSourceId) {
@@ -39,11 +39,12 @@ data class TransferRequest (
         if (targetDate != null && targetDate.isBefore(ZonedDateTime.now().plusMinutes(10))) {
             throw InvalidRequestException(ERROR_INVALID_TARGET_DATE)
         }
-        description = unvalidatedDescription?.substring(0, MAX_DESCRIPTION_LENGTH) ?: ""
+        reviewedDescription = unvalidatedDescription?.substring(0, MAX_DESCRIPTION_LENGTH) ?: ""
         sourceId = unvalidatedSourceId
     }
 
-    val immediate: Boolean by lazy { targetDate?.run { false } ?: true }
+    @Transient
+    val isImmediate = targetDate == null
 
     companion object {
         private const val MAX_DESCRIPTION_LENGTH = 500

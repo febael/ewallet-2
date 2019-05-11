@@ -1,5 +1,7 @@
 package com.bawer.tasks.revolut.ewallet.controller
 
+import com.bawer.tasks.revolut.ewallet.STATUS_CREATED
+import com.bawer.tasks.revolut.ewallet.STATUS_NOT_FOUND
 import com.bawer.tasks.revolut.ewallet.model.Transfer
 import com.bawer.tasks.revolut.ewallet.model.request.AccountRequest
 import com.bawer.tasks.revolut.ewallet.model.request.TransferDirection
@@ -23,7 +25,7 @@ class AccountController @Inject constructor(private val service: AccountService)
     @Produces(Produces.JSON)
     @NoCache
     fun get(@Param id: Int) = service.get(id)?.let { ApiResponse(it) }
-            ?: ApiResponse.notFound().also { response.status(404) }
+            ?: ApiResponse.notFound().also { response.status(STATUS_NOT_FOUND) }
 
     @GET("/{id}/transfers")
     @Produces(Produces.JSON)
@@ -40,7 +42,7 @@ class AccountController @Inject constructor(private val service: AccountService)
     @Produces(Produces.JSON)
     @Consumes(Consumes.JSON)
     fun create(@Body request: AccountRequest) = ApiResponse(returnObject = service.create(request)).also {
-        response.status(201)
+        response.status(STATUS_CREATED)
         response.header(HttpConstants.Header.LOCATION, "${getRequest().applicationPath}/${it.returnObject!!.id}")
     }
 }
