@@ -73,7 +73,7 @@
         <td>1h</td>
     </tr>
     <tr>
-        <td>0%</td>
+        <td>100%</td>
         <td>P0</td>
         <td>Create a detailed README.md file</td>
         <td>1h</td>
@@ -121,7 +121,7 @@
         <td>0.5h</td>
     </tr>
     <tr>
-        <td>80%</td>
+        <td>1000%</td>
         <td>P2</td>
         <td>No magic strings or numbers</td>
         <td>0.5h</td>
