@@ -4,7 +4,7 @@ import com.bawer.tasks.revolut.ewallet.repository.cqengine.CQEngineAccountReposi
 import com.bawer.tasks.revolut.ewallet.repository.cqengine.CQEngineTransferRepository
 
 
-object CQEngineFunctionalTests : BaseFunctionalTests() {
+internal class CQEngineFunctionalTests : BaseFunctionalTests() {
 
     override val accountRepository = CQEngineAccountRepository()
     override val transferRepository = CQEngineTransferRepository()

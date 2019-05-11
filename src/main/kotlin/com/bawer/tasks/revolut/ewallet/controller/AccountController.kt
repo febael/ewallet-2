@@ -22,7 +22,8 @@ class AccountController @Inject constructor(private val service: AccountService)
     @GET("/{id}")
     @Produces(Produces.JSON)
     @NoCache
-    fun get(@Param id: Int) = ApiResponse(returnObject = service.get(id))
+    fun get(@Param id: Int) = service.get(id)?.let { ApiResponse(it) }
+            ?: ApiResponse.notFound().also { response.status(404) }
 
     @GET("/{id}/transfers")
     @Produces(Produces.JSON)

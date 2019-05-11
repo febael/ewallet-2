@@ -7,13 +7,13 @@ import com.google.gson.Gson
 import org.junit.jupiter.api.AfterAll
 
 
-object RedisFunctionalTests : BaseFunctionalTests() {
+internal class RedisFunctionalTests : BaseFunctionalTests() {
 
     private val gson = Gson()
-    private val jedisPool = RedisWrapper.jedisPool
+    private val jedisPool by lazy { RedisWrapper.jedisPool }
 
-    override val accountRepository = RedisAccountRepository(jedisPool, gson)
-    override val transferRepository = RedisTransferRepository(jedisPool, gson)
+    override val accountRepository = RedisAccountRepository(jedisPool!!, gson)
+    override val transferRepository = RedisTransferRepository(jedisPool!!, gson)
 
     @AfterAll
     override fun tearDown() {

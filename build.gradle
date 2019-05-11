@@ -34,8 +34,18 @@ dependencies {
     testCompile "io.ktor:ktor-client-apache:1.1.4"
 }
 
-compileKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
-compileTestKotlin.kotlinOptions.jvmTarget = jvmTargetVersion
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = jvmTargetVersion
+        javaParameters = true
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = jvmTargetVersion
+        javaParameters = true
+    }
+}
 
 sourceSets {
     main.kotlin.srcDirs = ['src/main/resources', 'src/main/kotlin']
@@ -59,9 +69,9 @@ test {
 
     failFast = true
 
-    onOutput { descriptor, event ->
-        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
-    }
+//    onOutput { descriptor, event ->
+//        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+//    }
 }
 
 task fatJar(type: Jar) {

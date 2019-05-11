@@ -22,7 +22,7 @@ import java.math.BigDecimal
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
-abstract class BaseFunctionalTests {
+internal abstract class BaseFunctionalTests {
 
     abstract val accountRepository: AccountRepository
     abstract val transferRepository: TransferRepository

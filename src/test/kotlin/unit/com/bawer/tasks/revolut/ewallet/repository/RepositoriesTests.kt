@@ -66,7 +66,7 @@ class RepositoriesTests {
         @JvmStatic private val jedisPool by lazy { RedisWrapper.jedisPool }
 
         @AfterAll
-        @JvmStatic internal fun tearDown() {
+        @JvmStatic fun tearDown() {
             RedisWrapper.tearDown()
         }
 
@@ -100,8 +100,8 @@ class RepositoriesTests {
                         CQEngineAccountRepository(),
                         CQEngineTransferRepository()),
                 arrayOf( // Redis
-                        RedisAccountRepository(jedisPool, gson),
-                        RedisTransferRepository(jedisPool, gson))
+                        RedisAccountRepository(jedisPool!!, gson),
+                        RedisTransferRepository(jedisPool!!, gson))
         )
 
         /**

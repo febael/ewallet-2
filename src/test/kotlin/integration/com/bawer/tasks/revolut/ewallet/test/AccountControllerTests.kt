@@ -2,6 +2,7 @@ package com.bawer.tasks.revolut.ewallet.test
 
 import com.bawer.tasks.revolut.ewallet.PippoApplicaton
 import com.bawer.tasks.revolut.ewallet.STATUS_FAILED
+import com.bawer.tasks.revolut.ewallet.STATUS_NOT_FOUND
 import com.bawer.tasks.revolut.ewallet.STATUS_OK
 import com.bawer.tasks.revolut.ewallet.controller.AccountController
 import com.bawer.tasks.revolut.ewallet.model.Account
@@ -15,6 +16,7 @@ import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -32,10 +34,31 @@ internal class AccountControllerTests : BaseControllerTests() {
     }
 
     @Test
-    fun `when a valid account creation is requested, then account will be created`() {
+    fun `when an existing account is requested, then it will be received`() {
+        runBlocking { with ( GET("/accounts/$CREATED_ACCOUNT_ID") ) {
+            verify { mockedAccountService.get(CREATED_ACCOUNT_ID) }
+            assertEquals(status, HttpStatusCode.OK)
+            val apiResponse = getApiResponse<Account>()
+            assertEquals(STATUS_OK, apiResponse.status)
+        } }
+    }
+
+    @Test
+    fun `when a missing account is requested, then error will be received`() {
+        runBlocking { with ( GET("/accounts/$MISSING_ACCOUNT_ID") ) {
+            verify { mockedAccountService.get(MISSING_ACCOUNT_ID) }
+            assertEquals(status, HttpStatusCode.NotFound)
+            val apiResponse = getApiResponse<Void>()
+            assertEquals(STATUS_NOT_FOUND, apiResponse.status)
+        } }
+    }
+
+    @Test
+    fun `when a valid account creation is requested, then account will be created and location will be received`() {
         runBlocking { with ( POST("/accounts", accountRequest) ) {
             verify { mockedAccountService.create(any()) }
             assertEquals(status, HttpStatusCode.Created)
+            assertNotNull(this.headers[LOCATION_HEADER])
             val apiResponse = getApiResponse<Account>()
             assertEquals(STATUS_OK, apiResponse.status)
         } }
@@ -44,6 +67,7 @@ internal class AccountControllerTests : BaseControllerTests() {
     @Test
     fun `when an invalid account creation is requested, then InternalServerError is received`() {
         runBlocking { with ( POST("/accounts", ERRONEOUS_BODY) ) {
+            verify(inverse = true) { mockedAccountService.create(any()) }
             assertEquals(status, HttpStatusCode.InternalServerError)
             val apiResponse = getApiResponse<Void>()
             assertEquals(STATUS_FAILED, apiResponse.status)
@@ -55,6 +79,7 @@ internal class AccountControllerTests : BaseControllerTests() {
         private const val CREATED_ACCOUNT_ID = 1
         private const val MISSING_ACCOUNT_ID = Integer.MAX_VALUE
         private const val ERRONEOUS_BODY = "ERRONEOUS"
+        private const val LOCATION_HEADER = "location"
 
         private val accountRequest = AccountRequest("Arvidas", "Testevicius", Currency.EUR)
         private val account = Account.from(accountRequest, CREATED_ACCOUNT_ID)

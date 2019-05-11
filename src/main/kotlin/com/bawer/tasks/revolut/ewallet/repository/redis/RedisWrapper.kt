@@ -1,19 +1,27 @@
 package com.bawer.tasks.revolut.ewallet.repository.redis
 
+import com.bawer.tasks.revolut.ewallet.myLogger
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig
 import redis.embedded.RedisServer
 
 object RedisWrapper {
 
-    private var instance: RedisServer? = null
+    private val logger = myLogger()
 
-    private val jedisPoolDelegate = lazy {
-        instance ?: create()
-        JedisPool(poolConfig)
-    }
+    private var serverInstance: RedisServer? = null
 
-    val jedisPool by jedisPoolDelegate
+    private var jedisPoolInstance: JedisPool? = null
+
+    var jedisPool: JedisPool? = null
+        private set
+        get() {
+            if (serverInstance == null) {
+                create()
+            }
+            return jedisPoolInstance?.takeUnless { it.isClosed }
+                    ?: JedisPool(poolConfig).also { jedisPoolInstance = it }
+        }
 
     private val poolConfig by lazy {
         JedisPoolConfig().apply {
@@ -30,16 +38,14 @@ object RedisWrapper {
     }
 
     fun create(port: Int = 6379): RedisServer {
-        tearDown()
-        instance = RedisServer(port).apply { start() }
-        return instance as RedisServer
+        logger.info("create for Redis")
+        serverInstance = RedisServer(port).apply { start() }
+        return serverInstance as RedisServer
     }
 
     fun tearDown() {
-        if (jedisPoolDelegate.isInitialized()) {
-            jedisPool.close()
-        }
-        instance?.apply { if(isActive) stop() } ?: return
-        instance = null
+        logger.info("tearDown for Redis")
+        jedisPool?.apply { close(); jedisPool = null }
+        serverInstance?.apply { if(isActive) stop(); serverInstance = null }
     }
 }
