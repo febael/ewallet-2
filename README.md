@@ -81,7 +81,7 @@ Hopefully, you will get a _build successful_ message as a result of all tests pa
 * __RepositoriesUnitTests__ : Parameterized unit tests for all alternative repositories in one class. Thanks to the common abstraction, a newly introduced datastore, will just require few lines of test configuration.
 * __ControllerTests__ : Start a pippo server and hit it with requests for checking status codes, headers and response bodies. Service dependencies of controllers are mocked.
 * __FunctionalTests__ : From service classes to repos or disruptor. Complementary tests to controller tests for whole system sanity checking.
-* __PerformanceTest__ : End2End tests for measuring performance. Planned but not yet written. Create a multi-threaded perftest client making frequent transfers, comparatively rare account and transfer check
+* __PerformanceTest__ : End2End tests for measuring performance. Planned but not yet written. Create a multi-threaded perftest client making frequent transfers, comparatively rare account and transfer check. Then get all transfers, analyze timestamp difference pf receive and completion fields for each configuration.
 
 ## Footnotes
 * Lmax Disruptor solves concurrency issues by a single threaded processing of requests. However, an internal transfer may momentarily keep the system overall account in a non-consistent balance. Redis has some cures for that : transactions, pipelining, multi commands.
