@@ -1,7 +1,7 @@
-# Revolut Task
-Handle money transfers between managed accounts with the most efficient and coherent way. Integrate clients with a REST api. Requirements are explained [here](doc/requirements.pdf).
+# Simple Wallet Back-end Implementation Using Lmax Disruptor And In-memory Data Stores
+Handle money transfers between managed accounts with the most efficient and coherent way. Integrate clients with a REST api.
 
-## My Requirements Analysis
+## Requirements Analysis
 * Used Kotlin
 * Prepared a priority based TODO plan with initial estimates. You can find it [here](TODO.md)
 * Made use of these frameworks/libraries/tools :
@@ -91,4 +91,5 @@ Hopefully, you will get a _build successful_ message as a result of all tests pa
     * RocksDB as in-memory store alternative
     * JVM concurrency constructs for the business logic
     * A highly parameterized executable test client
+    * API documentation by Swagger
      
