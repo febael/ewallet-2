@@ -30,6 +30,9 @@ Handle money transfers between managed accounts with the most efficient and cohe
 * System keeps _Accounts_ and _Transfers_ in separate stores. You can check their corresponding classes.
 * An executable fatjar for running whole system by simply copying file and run. 
 
+### Why Guice?
+A lightweight dependency injector just for the purpose. I like it.
+
 ### Why Pippo?
 I wanted a light JVM web framework easily configurable (supporting pluggable web servers). Pippo looks like a fit.
 
